@@ -1,0 +1,32 @@
+{
+  "name": "@pixeloven/infra-skills",
+  "version": "0.1.0",
+  "description": "A Crew pack of infrastructure stack conventions: Terraform, Ansible, Kubernetes (Kustomize and workload patterns), and GitHub Actions. Skills only; estate specifics defer to the consumer's local skills.",
+  "keywords": [
+    "pi-package",
+    "claude-plugin",
+    "skills",
+    "crew-pack",
+    "infrastructure",
+    "terraform",
+    "ansible",
+    "kubernetes",
+    "github-actions"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixeloven/infra-skills.git"
+  },
+  "files": [
+    ".claude-plugin",
+    "LICENSE",
+    "README.md",
+    "skills"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ]
+  }
+}

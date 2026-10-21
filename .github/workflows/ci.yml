@@ -1,0 +1,56 @@
+---
+# This pack's skills load AS INSTRUCTIONS into every consumer's agents, so it
+# lints itself on every PR -- with Crew's published checks, run from a Crew
+# checkout, never copies (docs/PACKS.md: copies drift from the day they land).
+# The slot list and requires vocabulary therefore come from Crew, not from here.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate pack against Crew's contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      # TODO: pin `ref:` to the Crew tag our skills' `requires:` names
+      # (v0.38.0) once that release is tagged. Tracking main until then.
+      # Checked out under .crew/ -- none of the checks scan dot-directories,
+      # so Crew's own skills never count as this pack's.
+      - name: Check out Crew
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: pixeloven/crew
+          ref: main
+          path: .crew
+
+      - name: Schema v2, description budget, pack contract
+        run: python3 .crew/scripts/check_skills.py --pack --root "$GITHUB_WORKSPACE" --report-cost
+
+      - name: Skill layout is what the harnesses read
+        run: python3 .crew/scripts/check_skill_layout.py "$GITHUB_WORKSPACE"
+
+      # check_links.py and check_versions.py land in Crew with its repo-gates
+      # work, not yet on main. Run them when the checked-out Crew has them.
+      - name: Relative links resolve inside the pack (if Crew ships the check)
+        run: |
+          if [ -f .crew/scripts/check_links.py ]; then
+            python3 .crew/scripts/check_links.py "$GITHUB_WORKSPACE"
+          else
+            echo "check_links.py not in this Crew checkout -- skipped"
+          fi
+
+      - name: Manifest versions agree (if Crew ships the check)
+        run: |
+          if [ -f .crew/scripts/check_versions.py ]; then
+            python3 .crew/scripts/check_versions.py "$GITHUB_WORKSPACE"
+          else
+            echo "check_versions.py not in this Crew checkout -- skipped"
+          fi
