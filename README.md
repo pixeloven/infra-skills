@@ -53,10 +53,9 @@ disable a pack skill.
 
 ## Description cost
 
-Every listed skill's description is paid in every session. Measured with
-Crew's `check_skills.py --pack --report-cost`:
+Measured with Crew's `check_skills.py --pack --report-cost` at Crew v0.38.0:
 
-```
+```text
 ansible-conventions         213
 github-actions-conventions  205
 k8s-kustomize-conventions   211
@@ -64,8 +63,6 @@ k8s-workload-patterns       207
 terraform-conventions       218
 total always-on description chars: 1054 (5 skills)
 ```
-
-**Total: 1054 characters across 5 skills.**
 
 ## Checks
 
@@ -77,7 +74,7 @@ python3 "$CREW/scripts/check_skills.py" --pack --root /absolute/path/to/infra-sk
 python3 "$CREW/scripts/check_skill_layout.py" /absolute/path/to/infra-skills
 ```
 
-CI does the same against a Crew checkout (see `.github/workflows/ci.yml`).
+CI calls Crew's reusable `pack-checks.yml` workflow (see `.github/workflows/ci.yml`).
 
 ## Versioning
 
