@@ -15,4 +15,4 @@ permissions:
 
 jobs:
   crew:
-    uses: pixeloven/crew/.github/workflows/pack-checks.yml@v0.43.0
+    uses: pixeloven/crew/.github/workflows/pack-checks.yml@v0.45.0
