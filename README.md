@@ -31,19 +31,20 @@ slot (`provides:`); these are conventions, not estate facts.
 
 | Harness | How | Notes |
 |---|---|---|
-| Claude Code | plugin `infra-skills@pixeloven` | marketplace entry pending |
+| Claude Code | plugin `infra-skills@pixeloven` | from `pixeloven/marketplace` |
 | pi.dev | git package `git:github.com/pixeloven/infra-skills@vX.Y.Z` | add beside Crew in `packages` |
-| OpenAI Codex | plugin `infra-skills@pixeloven`, or vendor `skills/` into `.agents/skills/` | marketplace entry pending |
+| OpenAI Codex | plugin `infra-skills@pixeloven`, or vendor `skills/` into `.agents/skills/` | from `pixeloven/marketplace` |
 
 One identity, three spellings: the repo is `pixeloven/infra-skills`, the
 package is `@pixeloven/infra-skills`, and the plugin is `infra-skills@pixeloven`.
 Nothing is published to a package registry — releases are git tags.
 
-**The `pixeloven/marketplace` entry is pending.** Until it lands, Claude Code and
-Codex users can load the pack from a local checkout (`claude --plugin-dir
-/absolute/path/to/infra-skills`) or vendor its `skills/` directory. Codex reads
-the same `.claude-plugin/plugin.json` `"skills": "./skills"` declaration Crew
-uses; there is no separate Codex manifest.
+Claude Code and Codex install the plugin from the shared catalogue at
+[`pixeloven/marketplace`](https://github.com/pixeloven/marketplace), which pins
+this repo by commit SHA, the same way it pins Crew. Codex reads the same
+`.claude-plugin/plugin.json` `"skills": "./skills"` declaration Crew uses; there
+is no separate Codex manifest. For a local checkout, `claude --plugin-dir
+/absolute/path/to/infra-skills` works too.
 
 Install Crew first and follow its quickstarts; this pack adds skills, not
 setup. As with Crew, Claude Code and Codex namespace plugin skills

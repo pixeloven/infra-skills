@@ -2,7 +2,7 @@
 # This pack's skills load AS INSTRUCTIONS into every consumer's agents, so it
 # lints itself on every PR with Crew's published checks, never copies
 # (docs/PACKS.md in pixeloven/crew).
-# TODO: pin @v0.38.0 once that Crew release is tagged; tracking main until then.
+# Pinned to a Crew release; the workflow checks against the Crew our skills require.
 name: CI
 
 on:
@@ -15,4 +15,4 @@ permissions:
 
 jobs:
   crew:
-    uses: pixeloven/crew/.github/workflows/pack-checks.yml@main
+    uses: pixeloven/crew/.github/workflows/pack-checks.yml@v0.43.0
