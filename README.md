@@ -76,8 +76,8 @@ so the whole team gets it. `--scope local` does the same in
 CLI default) enables the pack in every project; choose it explicitly only if
 most of your work is infrastructure.
 
-Follow Crew's quickstarts; this pack adds skills, not
-setup. As with Crew, Claude Code and Codex namespace plugin skills
+Follow Crew's quickstarts; this pack adds skills, not setup. As with Crew,
+Claude Code and Codex namespace plugin skills
 (`infra-skills:<name>`) while project skills stay bare, so a same-named local
 skill does not shadow the pack copy. Do not rely on collision behaviour to
 disable a pack skill.
