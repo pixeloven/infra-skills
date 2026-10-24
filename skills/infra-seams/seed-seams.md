@@ -74,7 +74,7 @@ kubectl kustomize <overlay> | grep -E '^kind: |tolerations:|storageClassName:'
 
 ```bash
 git diff "$BASE"...HEAD -- '*.yaml' '*.yml' \
-  | grep -E '(kind: (Cluster)?Role(Binding)?|^\+.*(verbs|resources|apiGroups|subjects):|^\+.*\*|^\+\s*-\s*"?[a-z0-9./-]*"?\s*$)'
+  | grep -E "(kind: (Cluster)?Role(Binding)?|^\+.*(verbs|resources|apiGroups|subjects):|^\+.*\*|^\+\s*-\s*[\"']?[a-z0-9./-]*[\"']?\s*(#.*)?$)"
 git diff "$BASE"...HEAD | grep -E '^\+.*(escalate|bind|impersonate|deletecollection|system:authenticated|system:serviceaccounts)'
 ```
 
