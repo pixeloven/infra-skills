@@ -1,7 +1,7 @@
 {
   "name": "@pixeloven/infra-skills",
-  "version": "0.1.0",
-  "description": "A Crew pack of infrastructure stack conventions: Terraform, Ansible, Kubernetes (Kustomize and workload patterns), and GitHub Actions. Skills only; estate specifics defer to the consumer's local skills.",
+  "version": "0.2.0",
+  "description": "A Crew pack of infrastructure stack conventions, seams and diagnostics: Terraform, Ansible, Kubernetes (Kustomize, workload patterns, health sweeps), GitHub Actions, and infrastructure seam detection. Skills only; estate specifics defer to the consumer's local skills.",
   "keywords": [
     "pi-package",
     "claude-plugin",
@@ -20,6 +20,7 @@
   },
   "files": [
     ".claude-plugin",
+    "CHANGELOG.md",
     "LICENSE",
     "README.md",
     "skills"

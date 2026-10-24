@@ -1,6 +1,6 @@
 ---
 name: ansible-conventions
-description: Use when writing or changing Ansible roles, playbooks, or inventory. Covers repository structure, runtime secret injection, Jinja2/bash delimiter traps, boot-only hardware services, and idempotent check-mode runs.
+description: Use when writing, changing or reviewing Ansible roles, playbooks, or inventory. Covers repository structure, runtime secret injection, Jinja2/bash delimiter traps, boot-only hardware services, and idempotent check-mode runs.
 tier: subject
 requires: [plugin:crew@>=0.38.0]
 expects-local: [platform-conventions, secret-paths, topology]
@@ -66,3 +66,12 @@ Some services deliberately live outside any cluster on Ansible-managed hosts (e.
 ## Idempotency
 
 All playbooks and roles must be safe to run repeatedly. Test with `--check --diff` before applying to production hosts. Use `changed_when: false` for commands that are inherently read-only but trigger changed state in Ansible's model.
+
+## Review checks
+
+- [ ] No secrets in playbooks, vars files, templates, or inventory; secrets are injected at runtime through a reference file and the project's secret runner (its secret-paths local skill names which)
+- [ ] `ansible_user` matches the project's inventory convention, not root
+- [ ] Boot-only services are enabled without a `state:` key; no task starts or restarts one
+- [ ] Templates that mix bash and Jinja2 carry the comment-delimiter remap header
+- [ ] Read-only commands set `changed_when: false`
+- [ ] The playbook is idempotent: a second run, and a `--check --diff` run, report no changes

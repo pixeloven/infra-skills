@@ -1,6 +1,6 @@
 ---
 name: k8s-kustomize-conventions
-description: Use when writing or changing Kubernetes manifests or Kustomize files. Defines base-and-overlay structure, patch patterns, manifest validation, image-transform limits, and how overlays map to GitOps sync targets.
+description: Use when writing, changing or reviewing Kubernetes manifests or Kustomize files. Defines base-and-overlay structure, patch patterns, manifest validation, image-transform limits, and how overlays map to GitOps sync targets.
 tier: subject
 requires: [plugin:crew@>=0.38.0]
 expects-local: [platform-conventions, topology]
@@ -92,3 +92,15 @@ Do not change `storageClassName` on these PVCs — the empty string is intention
 ## Kustomize image transforms
 
 Kustomize image transforms only rewrite fields Kustomize knows are images. They do **not** reach custom resources such as Argo Workflows `WorkflowTemplate`s unless the project teaches Kustomize those field paths (`configurations:`). If pinning an image in such a CRD, set the tag directly in its YAML — do not rely on `images:` in `kustomization.yaml` to propagate there.
+
+## Review checks
+
+When reviewing a change to manifests or Kustomize files (with `k8s-workload-patterns` for the workload spec itself):
+
+- [ ] `kubectl kustomize <overlay>` resolves without error for every overlay the change touches, including overlays that inherit a changed base
+- [ ] Environment-specific config (tolerations, GPU, replicas, resources) is patched in an overlay, not written into base
+- [ ] A base change is called out as such, with the overlays it reaches
+- [ ] On clusters whose platform-conventions local skill requires it, every workload overlay carries the control-plane toleration; on clusters without that rule, none is added
+- [ ] GPU workloads: node selector and the GPU resource limit live in an overlay patch, never in base
+- [ ] Static-PV PVCs keep `storageClassName: ""`
+- [ ] An image pinned inside a custom resource is set in that resource's YAML, not left to `images:`

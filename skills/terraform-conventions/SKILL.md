@@ -88,3 +88,14 @@ If the project ships an infrastructure CLI wrapper, prefer it — it enforces st
 ```
 
 Without a wrapper, run `terraform plan` / `terraform apply` per stage directory in the same order.
+
+## Review checks
+
+- [ ] `terraform fmt -check` and `terraform validate` pass for every stage the change touches
+- [ ] No secrets in `.tf` or `.tfvars`; credentials resolve at plan/apply time through the project's secrets path (its secret-paths local skill names which)
+- [ ] Secret-bearing variables and outputs are `sensitive = true`
+- [ ] Host and node addresses come from the typed address map, not inline literals
+- [ ] Shared non-sensitive constants live in the shared tfvars, not repeated per stage
+- [ ] New providers are pinned in `required_providers` and `.terraform.lock.hcl` is committed
+- [ ] The change is idempotent: a plan against already-applied state shows no diff for stable resources
+- [ ] Stage order is respected: a later stage reads an earlier one through outputs or data sources, never copied values

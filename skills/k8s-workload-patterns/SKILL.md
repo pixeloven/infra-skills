@@ -109,3 +109,26 @@ Always use PVCs, never hostPath (except for node-level DaemonSet patterns such a
 - retained tier — user data, media, long-lived shared content (bulk media, `Retain` reclaim)
 
 Never swap these without reviewing the reclaim consequence.
+
+## Secrets in manifests
+
+A manifest never holds a secret value. It holds a **secret-sync object** that a controller resolves into a Kubernetes `Secret` from the project's secret store. Common shapes:
+
+- **External Secrets Operator:** an `ExternalSecret` referencing a `ClusterSecretStore` or `SecretStore`, with a refresh interval and a deletion policy.
+- **Sealed Secrets:** a `SealedSecret` encrypted for one cluster's controller key, committed as ciphertext.
+- **Secrets Store CSI driver:** a `SecretProviderClass` mounted as a volume, optionally synced to a `Secret`.
+
+Which mechanism the project uses, its registered store name, and the invariants that must never change silently (for External Secrets, typically the refresh interval and the deletion policy) belong to its platform-conventions local skill, if it defines one; store and item paths belong to its secret-paths local skill. Without them, ask rather than pick values. Add a sync object in the same change as the workload that consumes it, never ahead of it. Changes to these invariants are seam material: see `infra-seams`.
+
+## Review checks
+
+When reviewing a workload manifest (with `k8s-kustomize-conventions` for structure and overlays):
+
+- [ ] Pod and container `securityContext` match the project's platform-conventions local skill, if it defines one (`runAsNonRoot: true`, `seccompProfile: RuntimeDefault`, its `fsGroup`, `allowPrivilegeEscalation: false`)
+- [ ] `capabilities: drop: [ALL]`, with any added capability justified in the change
+- [ ] Namespace PodSecurity levels (`pod-security.kubernetes.io/*` labels) are preserved; a namespace raised above `restricted` is one the platform-conventions skill names
+- [ ] StorageClass matches the data's tier, and a tier change is reviewed for its reclaim consequence
+- [ ] `requests` set, memory `limits` set; GPU resources only in an overlay
+- [ ] Probes match the workload's real readiness and liveness semantics
+- [ ] No secret values in any manifest; secrets arrive through the project's sync object, referencing its registered store, with a consumer in the same change (see Secrets in manifests)
+- [ ] `runtimeClassName` only where the platform-conventions skill's decision table calls for it

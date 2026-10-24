@@ -1,7 +1,9 @@
 # infra-skills
 
 Infrastructure stack conventions for coding agents: Terraform, Ansible,
-Kubernetes (Kustomize and workload patterns), and GitHub Actions.
+Kubernetes (Kustomize and workload patterns), and GitHub Actions, each with the
+review checks for its stack; plus infrastructure seam detection and Kubernetes
+health-sweep diagnostics.
 
 infra-skills is a **pack** for [Crew](https://github.com/pixeloven/crew): a
 sibling plugin that ships skills only, no roles, and plugs into Crew's roles
@@ -19,13 +21,24 @@ is checked by Crew's own published gates. Every skill declares
 | `k8s-kustomize-conventions` | Writing Kubernetes manifests or Kustomize files: base/overlay structure, patches, validation, GitOps sync targets |
 | `k8s-workload-patterns` | Choosing a workload type or sizing a pod: resources, probes, storage, security context, runtime class, exposure |
 | `github-actions-conventions` | Writing or reviewing GitHub Actions workflows: pinning, secrets, `gh` CLI, uv Python jobs, gitleaks |
+| `infra-seams` | A diff touches secret-sync objects, tolerations, storage classes, RBAC, or an LLM/tool gateway's access config: seam shapes, greps, registry seed entries |
+| `k8s-diagnostics` | Running a Kubernetes health sweep or diagnosing a failing node, pod, GitOps sync or secret sync |
+
+The conventions skills carry a **Review checks** list for their stack; a review
+applies the list of each stack the diff touches.
+`infra-seams` adds infrastructure shapes to Crew's `seam-detection` method, as
+`auth-seams` does for identity, and seeds the project's `protected-seams`
+registry from [its seed file](skills/infra-seams/seed-seams.md).
+`k8s-diagnostics` fills the Kubernetes sections of the sweep that Crew's
+`incident-runbook-template` structures.
 
 No project context is baked in. Anything bound to one estate — which cloud or
 hypervisor provider, which secrets backend, cluster topology, domains, storage
-classes — is deferred to the consumer's local skills through `expects-local:`
-slots (`platform-conventions`, `secret-paths`, `topology`). Crew's
+classes, node OS, which gateway or GitOps controller — is deferred to the
+consumer's local skills through `expects-local:` slots (`platform-conventions`,
+`secret-paths`, `topology`, `protected-seams`, `agent-runtime`). Crew's
 `templates/local-skills/` has starter stubs for each. No skill here fills a
-slot (`provides:`); these are conventions, not estate facts.
+slot (`provides:`); these are conventions and methods, not estate facts.
 
 ## Install
 
@@ -54,15 +67,17 @@ disable a pack skill.
 
 ## Description cost
 
-Measured with Crew's `check_skills.py --pack --report-cost` at Crew v0.38.0:
+Measured with Crew's `check_skills.py --pack --report-cost` at Crew v0.45.0:
 
 ```text
-ansible-conventions         213
+ansible-conventions         224
 github-actions-conventions  205
-k8s-kustomize-conventions   211
+infra-seams                 213
+k8s-diagnostics             216
+k8s-kustomize-conventions   222
 k8s-workload-patterns       207
 terraform-conventions       218
-total always-on description chars: 1054 (5 skills)
+total always-on description chars: 1505 (7 skills)
 ```
 
 ## Checks
