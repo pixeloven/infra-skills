@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- README install guidance makes project-scope enablement the default
+  (`claude plugin install infra-skills@pixeloven --scope project`, or
+  `enabledPlugins` in the project's `.claude/settings.json`), with user scope as
+  the explicit alternative (pixeloven/infra-skills#8, pixeloven/crew#103).
+  Docs only; no version bump.
+
 ## 0.2.0
 
 Receives the infrastructure material leaving Crew core (pixeloven/crew#102,

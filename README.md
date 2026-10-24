@@ -59,8 +59,25 @@ this repo by commit SHA, the same way it pins Crew. Codex reads the same
 is no separate Codex manifest. For a local checkout, `claude --plugin-dir
 /absolute/path/to/infra-skills` works too.
 
-Install Crew first and follow its quickstarts; this pack adds skills, not
-setup. As with Crew, Claude Code and Codex namespace plugin skills
+Enable the pack per project, in the infrastructure repos where it applies, not
+for every session: each enabled pack adds its descriptions to the always-on
+skill listing, and Claude Code collapses an over-budget listing to names only,
+which hurts skill selection. Install Crew (`crew@pixeloven`) first, then, from
+the project root:
+
+```sh
+claude plugin install infra-skills@pixeloven --scope project
+```
+
+This writes `"enabledPlugins": { "infra-skills@pixeloven": true }` to the
+project's `.claude/settings.json`, which you can also edit by hand and commit
+so the whole team gets it. `--scope local` does the same in
+`.claude/settings.local.json` for you alone. User scope (`--scope user`, the
+CLI default) enables the pack in every project; choose it explicitly only if
+most of your work is infrastructure.
+
+Follow Crew's quickstarts; this pack adds skills, not setup. As with Crew,
+Claude Code and Codex namespace plugin skills
 (`infra-skills:<name>`) while project skills stay bare, so a same-named local
 skill does not shadow the pack copy. Do not rely on collision behaviour to
 disable a pack skill.
