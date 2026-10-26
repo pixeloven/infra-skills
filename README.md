@@ -2,8 +2,8 @@
 
 Infrastructure stack conventions for coding agents: Terraform, Ansible,
 Kubernetes (Kustomize and workload patterns), and GitHub Actions, each with the
-review checks for its stack; plus infrastructure seam detection and Kubernetes
-health-sweep diagnostics.
+review checks for its stack; plus infrastructure seam detection, Kubernetes
+health-sweep diagnostics, and a go-public review for GitHub repositories.
 
 infra-skills is a **pack** for [Crew](https://github.com/pixeloven/crew): a
 sibling plugin that ships skills only, no roles, and plugs into Crew's roles
@@ -23,6 +23,7 @@ is checked by Crew's own published gates. Every skill declares
 | `github-actions-conventions` | Writing or reviewing GitHub Actions workflows: pinning, secrets, `gh` CLI, uv Python jobs, gitleaks |
 | `infra-seams` | A diff touches secret-sync objects, tolerations, storage classes, RBAC, or an LLM/tool gateway's access config: seam shapes, greps, registry seed entries |
 | `k8s-diagnostics` | Running a Kubernetes health sweep or diagnosing a failing node, pod, GitOps sync or secret sync |
+| `go-public-review` | Making a GitHub repository public, or reviewing one already public: content over all history and PR refs, branches and tags, docs, public CI, security policy, licence |
 
 The conventions skills carry a **Review checks** list for their stack; a review
 applies the list of each stack the diff touches.
@@ -31,6 +32,9 @@ applies the list of each stack the diff touches.
 registry from [its seed file](skills/infra-seams/seed-seams.md).
 `k8s-diagnostics` fills the Kubernetes sections of the sweep that Crew's
 `incident-runbook-template` structures.
+`go-public-review` is a checklist of criteria C1–C6 with an audit method; it
+pairs with `github-actions-conventions` for the public-CI criterion and never
+applies repository settings itself.
 
 No project context is baked in. Anything bound to one estate — which cloud or
 hypervisor provider, which secrets backend, cluster topology, domains, storage
@@ -89,12 +93,13 @@ Measured with Crew's `check_skills.py --pack --report-cost` at Crew v0.45.0:
 ```text
 ansible-conventions         224
 github-actions-conventions  205
+go-public-review            236
 infra-seams                 213
 k8s-diagnostics             216
 k8s-kustomize-conventions   222
 k8s-workload-patterns       207
 terraform-conventions       218
-total always-on description chars: 1505 (7 skills)
+total always-on description chars: 1741 (8 skills)
 ```
 
 ## Checks

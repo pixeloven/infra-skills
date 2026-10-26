@@ -1,12 +1,20 @@
 # Changelog
 
-## Unreleased
+## 0.3.0
 
+- New **`go-public-review`** skill: the go-public criteria for a GitHub
+  repository as a checklist — C1 content over all reachable history, commit
+  metadata and PR refs (the maintainer's own identity acceptable; credentials,
+  employer and colleague names, internal hosts and URLs, and copied private
+  content not), C2 branches, tags and PR refs, C3 documentation, C4 CI on a
+  public repository, C5 security policy, C6 licence — with the audit method
+  (criteria before findings; must-fix, should-fix or acceptable; forward fix
+  unless a live exposure cannot be rotated; settings are owner actions) and a
+  report shape. Pairs with `github-actions-conventions` for C4.
 - README install guidance makes project-scope enablement the default
   (`claude plugin install infra-skills@pixeloven --scope project`, or
   `enabledPlugins` in the project's `.claude/settings.json`), with user scope as
   the explicit alternative (pixeloven/infra-skills#8, pixeloven/crew#103).
-  Docs only; no version bump.
 
 ## 0.2.0
 
