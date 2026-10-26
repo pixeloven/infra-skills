@@ -114,12 +114,15 @@ gitleaks git --log-opts="--all"
 git log --all --format='%an <%ae>%n%cn <%ce>' | sort -u
 git log --all --format='%(trailers:only)' | sort -u
 git log --all -p -G'<pattern>'              # names, hosts, domains from the criteria
-gh pr list -R <owner>/<repo> --state all --json number,title,body
-gh issue list -R <owner>/<repo> --state all --json number,title,body
+gh pr list -R <owner>/<repo> --state all --limit 10000 --json number,title,body,reviews
+gh issue list -R <owner>/<repo> --state all --limit 10000 --json number,title,body
+gh api --paginate repos/<owner>/<repo>/releases --jq '.[] | {tag_name, name, body}'
+gh api --paginate repos/<owner>/<repo>/issues/comments --jq '.[] | {html_url, body}'
+gh api --paginate repos/<owner>/<repo>/pulls/comments --jq '.[] | {html_url, body}'
 
 # C2, C4, C5: current settings, reported, never changed
-gh api repos/<owner>/<repo>/branches                  # each non-default branch
-gh api repos/<owner>/<repo>/rulesets
+gh api --paginate repos/<owner>/<repo>/branches       # each non-default branch
+gh api --paginate repos/<owner>/<repo>/rulesets
 gh api repos/<owner>/<repo>/branches/<default>/protection
 gh api repos/<owner>/<repo>/actions/permissions/workflow
 gh api repos/<owner>/<repo>/private-vulnerability-reporting
