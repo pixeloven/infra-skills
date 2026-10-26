@@ -119,6 +119,7 @@ gh issue list -R <owner>/<repo> --state all --limit 10000 --json number,title,bo
 gh api --paginate repos/<owner>/<repo>/releases --jq '.[] | {tag_name, name, body}'
 gh api --paginate repos/<owner>/<repo>/issues/comments --jq '.[] | {html_url, body}'
 gh api --paginate repos/<owner>/<repo>/pulls/comments --jq '.[] | {html_url, body}'
+gh api --paginate repos/<owner>/<repo>/comments --jq '.[] | {html_url, body}'
 
 # C2, C4, C5: current settings, reported, never changed
 gh api --paginate repos/<owner>/<repo>/branches       # each non-default branch
