@@ -11,10 +11,12 @@
   (criteria before findings; must-fix, should-fix or acceptable; forward fix
   unless a live exposure cannot be rotated; settings are owner actions) and a
   report shape. Pairs with `github-actions-conventions` for C4.
-- README install guidance makes project-scope enablement the default
-  (`claude plugin install infra-skills@pixeloven --scope project`, or
-  `enabledPlugins` in the project's `.claude/settings.json`), with user scope as
-  the explicit alternative (pixeloven/infra-skills#8, pixeloven/crew#103).
+- README install guidance recommends user-scope installation beside Crew
+  (`claude plugin install infra-skills@pixeloven --scope user`), matching
+  machine-wide delivery (operator ADR-0019), with project or local scope
+  (`enabledPlugins` in the project's `.claude/settings.json` or
+  `.claude/settings.local.json`) as the per-repo alternative
+  (pixeloven/infra-skills#8, pixeloven/crew#103).
 
 ## 0.2.0
 
